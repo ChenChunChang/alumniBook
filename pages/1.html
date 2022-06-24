@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/turn.js/3/turn.min.js"></script>
+    <style type="text/css">
+        body {
+            background: #ccc;
+        }
+
+        #book {
+            width: 1200px;
+            height: 774px;
+        }
+
+        #book .turn-page {
+            background-color: white;
+        }
+
+        #book .cover {
+            background: url('../pages/cover.png') no-repeat;
+            background-size: contain;
+        }
+
+        #book .page-1 {
+            background: url('../pages/page1.png') no-repeat;
+            background-size: contain;
+        }
+
+        #book .cover h1 {
+            color: white;
+            text-align: center;
+            font-size: 50px;
+            line-height: 774px;
+            margin: 0px;
+        }
+
+        #book .loader {
+            background-image: url(loader.gif);
+            width: 24px;
+            height: 24px;
+            display: block;
+            position: absolute;
+            top: 238px;
+            left: 188px;
+        }
+
+        #book .data {
+            text-align: center;
+            font-size: 40px;
+            color: #999;
+            line-height: 774px;
+        }
+
+        #controls {
+            width: 1200px;
+            text-align: center;
+            margin: 20px 0px;
+            font: 30px arial;
+        }
+
+        #controls input,
+        #controls label {
+            font: 30px arial;
+        }
+
+        #book .odd {
+            background-image: -webkit-linear-gradient(left, #FFF 95%, #ddd 100%);
+            background-image: -moz-linear-gradient(left, #FFF 95%, #ddd 100%);
+            background-image: -o-linear-gradient(left, #FFF 95%, #ddd 100%);
+            background-image: -ms-linear-gradient(left, #FFF 95%, #ddd 100%);
+        }
+
+        #book .even {
+            background-image: -webkit-linear-gradient(right, #FFF 95%, #ddd 100%);
+            background-image: -moz-linear-gradient(right, #FFF 95%, #ddd 100%);
+            background-image: -o-linear-gradient(right, #FFF 95%, #ddd 100%);
+            background-image: -ms-linear-gradient(right, #FFF 95%, #ddd 100%);
+        }
+    </style>
+    <div id="book">
+        <div class="cover">
+            <!-- 这里是翻书页面 -->
+        </div>
+        <div class="page-1">
+
+        </div>
+    </div>
+
+    <!-- 这里是分页数据 -->
+    <div id="controls">
+        <label for="page-number">Page:</label> <input type="text" size="3" id="page-number"> of <span
+            id="number-pages"></span>
+    </div>
+
+    <!-- 以下是关键的js代码 -->
+    <script type="text/javascript">
+
+        var numberOfPages = 100;
+
+        function addPage(page, book) {
+            if (!book.turn('hasPage', page)) {
+                var element = $('<div />', { 'class': 'page ' + ((page % 2 == 0) ? 'odd' : 'even'), 'id': 'page-' + page }).html('<i class="loader"></i>');
+                book.turn('addPage', element, page);
+                setTimeout(function () {
+                    element.html('<div class="data">Data for page ' + page + '</div>');
+                }, 10);
+            }
+        }
+
+        $(window).ready(function () {
+            $('#book').turn({
+                acceleration: true,
+                pages: numberOfPages,
+                elevation: 50,
+                gradients: true,
+                when: {
+                    turning: function (e, page, view) {
+                        var range = $(this).turn('range', page);
+                        for (page = range[0]; page < range[1]; page++)
+                            addPage(page, $(this));
+                    },
+
+                    turned: function (e, page) {
+                        $('#page-number').val(page);
+                    }
+                }
+            });
+
+            $('#number-pages').html(numberOfPages);
+            $('#page-number').keydown(function (e) {
+                if (e.keyCode == 13)
+                    $('#book').turn('page', $('#page-number').val());
+
+            });
+        });
+
+        $(window).bind('keydown', function (e) {
+
+            if (e.target && e.target.tagName.toLowerCase() != 'input')
+                if (e.keyCode == 37)
+                    $('#book').turn('previous');
+                else if (e.keyCode == 39)
+                    $('#book').turn('next');
+
+        });
+
+    </script>
+    <script>
+        $("#book").on("mousedown", function (e) {
+            // 判断默认行为是否可以被禁用
+            if (e.cancelable) {
+                // 判断默认行为是否已经被禁用
+                if (!e.defaultPrevented) {
+                    e.preventDefault();
+                }
+            }
+            startX = e.originalEvent.pageX,
+                startY = e.originalEvent.pageY;
+        });
+        $("#book").on("mouseup", function (e) {
+            // 判断默认行为是否可以被禁用
+            if (e.cancelable) {
+                // 判断默认行为是否已经被禁用
+                if (!e.defaultPrevented) {
+                    e.preventDefault();
+                }
+            }
+            moveEndX = e.originalEvent.pageX,
+                moveEndY = e.originalEvent.pageY,
+                X = moveEndX - startX,
+                Y = moveEndY - startY;
+            //左右滑
+            if (X > 50) {
+                $('#book').turn('previous');
+            }
+            //右左滑
+            else if (X < -50) {
+                $('#book').turn('next');
+            }
+        });
+    </script>
+</body>
+
+</html>

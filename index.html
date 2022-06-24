@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>那年夏天</title>
+</head>
+
+<body>
+<script type="text/javascript" src="./js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="./js/turn.min.js"></script>
+<style type="text/css">
+    #book {
+        width: 1200px;
+        height: 774px;
+    }
+
+    input {
+        border: 0;
+        background: rgba(0, 0, 0, 0);
+        font-size: 16px;
+        outline: none;
+    }
+
+    textarea {
+        border: 0;
+        background: rgba(0, 0, 0, 0);
+        font-size: 16px;
+        outline: none;
+        resize: none;
+    }
+
+    #book .turn-page {
+        background-color: white;
+    }
+
+    #book .cover {
+        background: url('./pages/cover.png') no-repeat;
+        background-size: contain;
+    }
+
+    #book .page-1 {
+        background: url('./pages/page1.png') no-repeat;
+        background-size: contain;
+    }
+
+    #book .page-2 {
+        background: url('./pages/page2.png') no-repeat;
+        background-size: contain;
+        position: relative;
+    }
+
+    .clearfix::after,
+    .clearfix::before {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+    .info-wrap {
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        padding-top: 50px;
+    }
+
+    .info-wrap .wrap-1 {
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 74px;
+        margin-left: 40px;
+    }
+
+    .avatar-wrap {
+        width: 110px;
+        height: 140px;
+        background: url('./pages/avatar-bg.png');
+        background-size: contain;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .avatar-wrap img {
+        width: 100px;
+        height: 130px;
+    }
+
+    .user-info,
+    .user-info-two {
+        padding-top: 20px;
+    }
+
+    .info-wrap-two {
+        display: flex;
+        flex-wrap: wrap;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .user-info input {
+        border: 0;
+        border-bottom: 1px solid #d2c9c9;
+        background: rgba(0, 0, 0, 0);
+        width: 95px;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .user-info-two input {
+        border: 0;
+        border-bottom: 1px solid #d2c9c9;
+        background: rgba(0, 0, 0, 0);
+        width: 168px;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .wish-wrap {
+        width: 76%;
+        height: 200px;
+        background: url('./pages/wish.png') no-repeat;
+        background-size: contain;
+        margin: 30px auto 0 auto;
+    }
+
+    .wish-wrap textarea {
+        width: 80%;
+        height: 50%;
+        border: 0;
+        margin-top: 7%;
+        margin-left: 6%;
+        background: rgba(0, 0, 0, 0);
+        outline: none;
+        resize: none;
+        text-indent: 6em;
+        font-size: 20px;
+        font-weight: 600;
+        overflow: hidden;
+    }
+
+    .input-wrap {
+        width: 70%;
+        height: 52%;
+        margin: 150px 0 0 11%;
+    }
+
+    .input-wrap textarea {
+        width: 100%;
+        height: 100%;
+        /* border-top: 2px dotted #000000; */
+        margin-top: 30px;
+        /* background: #FFF; */
+        line-height: 49px;
+        overflow: hidden;
+    }
+
+    #book .cover h1 {
+        color: white;
+        text-align: center;
+        font-size: 50px;
+        line-height: 774px;
+        margin: 0px;
+    }
+
+    #book .loader {
+        background-image: url(loader.gif);
+        width: 24px;
+        height: 24px;
+        display: block;
+        position: absolute;
+        top: 238px;
+        left: 188px;
+    }
+
+    #book .data {
+        text-align: center;
+        font-size: 40px;
+        color: #999;
+        line-height: 774px;
+    }
+
+    #controls {
+        width: 1200px;
+        text-align: center;
+        margin: 20px 0px;
+        font: 30px arial;
+    }
+
+    #controls input,
+    #controls label {
+        font: 30px arial;
+    }
+
+    #book .odd {
+        background-image: -webkit-linear-gradient(left, #FFF 95%, #ddd 100%);
+        background-image: -moz-linear-gradient(left, #FFF 95%, #ddd 100%);
+        background-image: -o-linear-gradient(left, #FFF 95%, #ddd 100%);
+        background-image: -ms-linear-gradient(left, #FFF 95%, #ddd 100%);
+    }
+
+    #book .even {
+        background-image: -webkit-linear-gradient(right, #FFF 95%, #ddd 100%);
+        background-image: -moz-linear-gradient(right, #FFF 95%, #ddd 100%);
+        background-image: -o-linear-gradient(right, #FFF 95%, #ddd 100%);
+        background-image: -ms-linear-gradient(right, #FFF 95%, #ddd 100%);
+    }
+
+    .btn {
+        position: absolute;
+        padding: 10px 20px;
+        background: #f6c456;
+        border-radius: 20px;
+        color: #fff;
+        right: 80px;
+        bottom: 80px;
+        cursor: pointer;
+        box-shadow: 0 0 5px #000;
+    }
+</style>
+<div id="book">
+    <div class="cover">
+        <!-- 这里是翻书页面 -->
+    </div>
+</div>
+
+<!-- 这里是分页数据 -->
+<div id="controls">
+    提示：鼠标长按拖住即可实现翻页，每一个人都只有填写一次的机会。填写之后记得保存哦，保存了之后就没法修改。填写的记录其他人也可以看见，要认真填写哦，说不定就被那个他/她看上了。记得留下头像哦！
+</div>
+
+<!-- 以下是关键的js代码 -->
+<script type="text/javascript">
+
+  var numberOfPages = 6;
+
+  // function addPage(page, book) {
+  //     if (!book.turn('hasPage', page)) {
+  //         var element = $('<div />', { 'class': 'page ' + ((page % 2 == 0) ? 'odd' : 'even'), 'id': 'page-' + page }).html('<i class="loader"></i>');
+  //         book.turn('addPage', element, page);
+  //         setTimeout(function () {
+  //             element.html('<div class="data">Data for page ' + page + '</div>');
+  //         }, 10);
+  //     }
+  // }                     // <textarea name="" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? 'https://cydeep.top/' + obj[i].avatar : ''}" id="textareaId1" rows="8" maxlength="200"></textarea>
+
+
+  $(window).ready(function () {
+    $.ajax({
+      url: 'https://cydeep.top/get_all_alumni_book',//请求的地址
+      type: 'post',//请求的方式
+      data: {
+        time: new Date().getTime()
+      },//携带到后端的参数
+      dataType: 'json',//期望后端返回的数据类型
+      success: function (res) {
+        var obj = {}
+        var index = 0
+        if (res.code == 200) {
+          res.data.forEach(item => {
+            index = item.page
+            obj[index] = item
+          })
+        }
+
+        for (let i = 1; i <= 50; i++) {
+          $('#book').append(`
+          <div class="page-1" id="page${i}">
+                <div class="info-wrap">
+                    <div class="avatar-wrap" style="position: relative">
+                        <img class="upfile" id="upfile${i}" src="${obj[i] ? 'https://cydeep.top/' + obj[i].avatar : './pages/avatar.png'}" alt="">
+                        <input class="file" page="${i}" type="file" style="opacity: 0; width: 100%; height: 100%;position: absolute; top: 0; left: 0;" id="file${i}"  class="${obj[i] ? 'yes' : 'no'}"/>
+                    </div>
+                    <div class="wrap-1">
+                        <div class="user-info">
+                            <span>姓名:</span>
+                            <input name="name" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].name : ''}" type="text">
+                        </div>
+                        <div class="user-info">
+                            <span>性别:</span>
+                            <input name="sex" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].sex : ''}" type="text">
+                        </div>
+                        <div class="user-info">
+                            <span>生日:</span>
+                            <input name="birthday" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].birthday : ''}" type="text">
+                        </div>
+                        <div class="user-info">
+                            <span>血型:</span>
+                            <input name="bloodType" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].bloodType : ''}" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="info-wrap-two">
+                    <div class="user-info">
+                        <span>班级:</span>
+                        <input name="class" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].class : ''}" type="text">
+                    </div>
+                    <div class="user-info">
+                        <span>运动:</span>
+                        <input name="motion" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].motion : ''}" type="text">
+                    </div>
+                    <div class="user-info">
+                        <span>音乐:</span>
+                        <input name="music" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].music : ''}" type="text">
+                    </div>
+                    <div class="user-info">
+                        <span>游戏:</span>
+                        <input name="motion" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].motion : ''}" type="text">
+                    </div>
+                    <div class="user-info">
+                        <span>偶像:</span>
+                        <input name="game"  class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].game : ''}" type="text">
+                    </div>
+                    <div class="user-info">
+                        <span>颜色:</span>
+                        <input name="colour" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].colour : ''}" type="text">
+                    </div>
+                </div>
+                <div class="info-wrap-two">
+                    <div class="user-info-two">
+                        <span>手机:</span>
+                        <input name="phone" class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].phone : ''}" type="text">
+                    </div>
+                    <div class="user-info-two">
+                        <span>QQ:</span>
+                        <input name="qq"  class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].qq : ''}" type="text">
+                    </div>
+                    <div class="user-info-two">
+                        <span>地址:</span>
+                        <input name="address"  class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].address : ''}">
+                    </div>
+                    <div class="user-info-two">
+                        <span>邮箱:</span>
+                        <input name="mailbox"  class="${obj[i] ? 'yes' : 'no'}" value="${obj[i] ? obj[i].mailbox : ''}">
+                    </div>
+                </div>
+                <div class="wish-wrap">
+                    <textarea name="remarks" id=""  class="${obj[i] ? 'yes' : 'no'}" >${obj[i] ? obj[i].remarks : ''}</textarea>
+                </div>
+            </div>
+            <div class="page-2" id="page${i}-2">
+                <div class="input-wrap">
+                    <textarea name="message"  class="${obj[i] ? 'yes' : 'no'}" id="textareaId1" rows="8" maxlength="200">${obj[i] ? obj[i].message : ''}</textarea>
+                </div>
+                <div style="display: ${obj[i] ? 'none' : ''}" class="btn" page="${i}">保存</div>
+            </div>
+          `)
+        }
+        var flag = false
+        $('.yes').attr('disabled', 'true')
+        $('.no').attr('disabled', false)
+        if (localStorage.getItem('disabled')) {
+          flag = true
+          $(`input`).attr('disabled', 'true')
+          $(`textarea`).attr('disabled', 'true')
+        }
+        $('#book').on('click', '.btn', function f() {
+          if (flag) {
+            return
+          }
+          flag = true
+          var page = $(this).attr('page')
+          if (obj[page]) {
+            page = index + 1
+          }
+          var formData = new FormData();
+          // console.log($('#upfile' + page)[0].files[0]);
+          var name = $(`#page${page} input[name=name]`).val(),
+          sex = $(`#page${page} input[name=sex]`).val(),
+          birthday = $(`#page${page} input[name=birthday]`).val(),
+          bloodType = $(`#page${page} input[name=bloodType]`).val(),
+          classname = $(`#page${page} input[name=class]`).val(),
+          motion = $(`#page${page} input[name=motion]`).val(),
+          music = $(`#page${page} input[name=music]`).val(),
+          game = $(`#page${page} input[name=game]`).val(),
+          colour = $(`#page${page} input[name=colour]`).val(),
+          phone = $(`#page${page} input[name=phone]`).val(),
+          qq = $(`#page${page} input[name=qq]`).val(),
+          address = $(`#page${page} input[name=address]`).val(),
+          mailbox = $(`#page${page} input[name=mailbox]`).val(),
+          remarks = $(`#page${page} textarea[name=remarks]`).val(),
+          // avatar = .files[0],
+          message = $(`#page${page}-2 textarea[name=message]`).val()
+          // console.log($('#file' + page)[0].files[0])
+          formData.append("avatar", $('#file' + page)[0].files[0]);
+          formData.append("name", name);
+          formData.append("sex", sex);
+          formData.append("birthday", birthday);
+          formData.append("bloodType", bloodType);
+          formData.append("classname", classname);
+          formData.append("motion", motion);
+          formData.append("music", music);
+          formData.append("game", game);
+          formData.append("colour", colour);
+          formData.append("phone", phone);
+          formData.append("qq", qq);
+          formData.append("address", address);
+          formData.append("mailbox", mailbox);
+          formData.append("remarks", remarks);
+          // formData.append("avatar", avatar);
+          formData.append("message", message);
+          formData.append("page", page);
+          if (!name) {
+            flag = false
+            alert('内容不能为空哦，留下你的足迹，也许就没有遗憾');
+            return;
+          }
+        })
+        $('#book').turn({
+          acceleration: true,
+          pages: 100,
+          elevation: 50,
+          duration: 1500,
+          gradients: true,
+          when: {
+            turning: function (e, page, view) {
+              console.log(11, page)
+              // var range = $(this).turn('range', page);
+              // for (page = range[0]; page < range[1]; page++)
+              //     addPage(page, $(this));
+            },
+
+            turned: function (e, page) {
+              // $('#page-number').val(page);
+            }
+          }
+        });
+
+        $("#book").on("change", ".file",function(){
+          var page = $(this).attr('page')
+          var objUrl = getObjectURL(this.files[0]) ; //获取图片的路径，该路径不是图片在本地的路径
+          if (objUrl) {
+            $("#upfile" + page).attr("src", objUrl) ; //将图片路径存入src中，显示出图片
+          }
+        })
+      }
+    })//成功的回调函数 res就是后端响应回来的数据
+
+    function getObjectURL(file) {
+      var url = null ;
+      if (window.createObjectURL!=undefined) { // basic
+        url = window.createObjectURL(file) ;
+      } else if (window.URL!=undefined) { // mozilla(firefox)
+        url = window.URL.createObjectURL(file) ;
+      } else if (window.webkitURL!=undefined) { // webkit or chrome
+        url = window.webkitURL.createObjectURL(file) ;
+      }
+      return url ;
+    }
+    // $('#number-pages').html(numberOfPages);
+    // $('#page-number').keydown(function (e) {
+    //     if (e.keyCode == 13)
+    //         $('#book').turn('page', $('#page-number').val());
+
+    // });
+    $('#textareaId').on('input', function (e) {
+      console.log(11, $(this).val().length)
+    })
+  })
+    ;
+
+    $(window).bind('keydown', function (e) {
+
+      if (e.target && e.target.tagName.toLowerCase() != 'input')
+        if (e.keyCode == 37)
+          $('#book').turn('previous');
+        else if (e.keyCode == 39)
+          $('#book').turn('next');
+
+    });
+
+</script>
+<script>
+  $("#book").on("mousedown", function (e) {
+    // 判断默认行为是否可以被禁用
+    // if (e.cancelable) {
+    //     // 判断默认行为是否已经被禁用
+    //     if (!e.defaultPrevented) {
+    //         e.preventDefault();
+    //     }
+    // }
+    startX = e.originalEvent.pageX,
+      startY = e.originalEvent.pageY;
+  });
+  $("#book").on("mouseup", function (e) {
+    // 判断默认行为是否可以被禁用
+    // if (e.cancelable) {
+    //     // 判断默认行为是否已经被禁用
+    //     if (!e.defaultPrevented) {
+    //         e.preventDefault();
+    //     }
+    // }
+    moveEndX = e.originalEvent.pageX,
+      moveEndY = e.originalEvent.pageY,
+      X = moveEndX - startX,
+      Y = moveEndY - startY;
+    //左右滑
+    if (X > 50) {
+      $('#book').turn('previous');
+    }
+    //右左滑
+    else if (X < -50) {
+      $('#book').turn('next');
+    }
+  });
+</script>
+</body>
+
+</html>
